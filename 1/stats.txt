@@ -1,0 +1,220 @@
+/home/rasztabigab/anaconda3/envs/WSI/bin/python /home/rasztabigab/SoftwareDevelopment/WSI/1/main.py
+Running minimizer to get some statistics, tolerance=0.0001
+Simple Gradient Descent             n=10 a=1   step=0.01 - 719 iterations 3.57 seconds elapsed
+Newtons Descent with Constant Step  n=10 a=1   step=0.01 - 1375 iterations 63.06 seconds elapsed
+Newtons Descent with Adaptive Step  n=10 a=1   step=0.01 - 1375 iterations 56.23 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=10 a=1   step=0.1  - 66  iterations 0.29 seconds elapsed
+Newtons Descent with Constant Step  n=10 a=1   step=0.1  - 133 iterations 5.45 seconds elapsed
+Newtons Descent with Adaptive Step  n=10 a=1   step=0.1  - 133 iterations 5.52 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=10 a=1   step=0.5  - 2   iterations 0.01 seconds elapsed
+Newtons Descent with Constant Step  n=10 a=1   step=0.5  - 21  iterations 0.92 seconds elapsed
+Newtons Descent with Adaptive Step  n=10 a=1   step=0.5  - 21  iterations 0.87 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=10 a=1   step=1.0  - 32  iterations 0.15 seconds elapsed
+Newtons Descent with Constant Step  n=10 a=1   step=1.0  - 2   iterations 0.08 seconds elapsed
+Newtons Descent with Adaptive Step  n=10 a=1   step=1.0  - 2   iterations 0.08 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=10 a=1   step=1.5  - 175 iterations 0.80 seconds elapsed
+Newtons Descent with Constant Step  n=10 a=1   step=1.5  - 21  iterations 0.85 seconds elapsed
+Newtons Descent with Adaptive Step  n=10 a=1   step=1.5  - 9   iterations 0.37 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=10 a=1   step=1.6  - 34  iterations 0.17 seconds elapsed
+Newtons Descent with Constant Step  n=10 a=1   step=1.6  - 29  iterations 1.22 seconds elapsed
+Newtons Descent with Adaptive Step  n=10 a=1   step=1.6  - 5   iterations 0.20 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=10 a=1   step=1.7  - 50  iterations 0.22 seconds elapsed
+Newtons Descent with Constant Step  n=10 a=1   step=1.7  - 40  iterations 1.57 seconds elapsed
+Newtons Descent with Adaptive Step  n=10 a=1   step=1.7  - 7   iterations 0.27 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=10 a=1   step=1.8  - 87  iterations 0.39 seconds elapsed
+Newtons Descent with Constant Step  n=10 a=1   step=1.8  - 63  iterations 2.47 seconds elapsed
+Newtons Descent with Adaptive Step  n=10 a=1   step=1.8  - 9   iterations 0.36 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=10 a=1   step=1.9  - 261 iterations 1.16 seconds elapsed
+Newtons Descent with Constant Step  n=10 a=1   step=1.9  - 133 iterations 5.39 seconds elapsed
+Newtons Descent with Adaptive Step  n=10 a=1   step=1.9  - 5   iterations 0.20 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=10 a=10  step=0.01 - 700 iterations 3.22 seconds elapsed
+Newtons Descent with Constant Step  n=10 a=10  step=0.01 - 1375 iterations 56.59 seconds elapsed
+Newtons Descent with Adaptive Step  n=10 a=10  step=0.01 - 1375 iterations 57.26 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=10 a=10  step=0.1  - 111 iterations 0.50 seconds elapsed
+Newtons Descent with Constant Step  n=10 a=10  step=0.1  - 133 iterations 5.43 seconds elapsed
+Newtons Descent with Adaptive Step  n=10 a=10  step=0.1  - 133 iterations 5.60 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=10 a=10  step=0.5  - 74  iterations 0.33 seconds elapsed
+Newtons Descent with Constant Step  n=10 a=10  step=0.5  - 21  iterations 0.83 seconds elapsed
+Newtons Descent with Adaptive Step  n=10 a=10  step=0.5  - 21  iterations 0.87 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=10 a=10  step=1.0  - 72  iterations 0.33 seconds elapsed
+Newtons Descent with Constant Step  n=10 a=10  step=1.0  - 2   iterations 0.08 seconds elapsed
+Newtons Descent with Adaptive Step  n=10 a=10  step=1.0  - 2   iterations 0.08 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=10 a=10  step=1.5  - 75  iterations 0.34 seconds elapsed
+Newtons Descent with Constant Step  n=10 a=10  step=1.5  - 21  iterations 0.83 seconds elapsed
+Newtons Descent with Adaptive Step  n=10 a=10  step=1.5  - 8   iterations 0.32 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=10 a=10  step=1.6  - 70  iterations 0.33 seconds elapsed
+Newtons Descent with Constant Step  n=10 a=10  step=1.6  - 29  iterations 1.18 seconds elapsed
+Newtons Descent with Adaptive Step  n=10 a=10  step=1.6  - 5   iterations 0.26 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=10 a=10  step=1.7  - 116 iterations 0.61 seconds elapsed
+Newtons Descent with Constant Step  n=10 a=10  step=1.7  - 40  iterations 1.73 seconds elapsed
+Newtons Descent with Adaptive Step  n=10 a=10  step=1.7  - 7   iterations 0.28 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=10 a=10  step=1.8  - 758 iterations 3.29 seconds elapsed
+Newtons Descent with Constant Step  n=10 a=10  step=1.8  - 63  iterations 2.51 seconds elapsed
+Newtons Descent with Adaptive Step  n=10 a=10  step=1.8  - 9   iterations 0.39 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=10 a=10  step=1.9  - 74  iterations 0.35 seconds elapsed
+Newtons Descent with Constant Step  n=10 a=10  step=1.9  - 133 iterations 5.28 seconds elapsed
+Newtons Descent with Adaptive Step  n=10 a=10  step=1.9  - 5   iterations 0.20 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=10 a=100 step=0.01 - 818 iterations 3.60 seconds elapsed
+Newtons Descent with Constant Step  n=10 a=100 step=0.01 - 1375 iterations 56.72 seconds elapsed
+Newtons Descent with Adaptive Step  n=10 a=100 step=0.01 - 1375 iterations 57.28 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=10 a=100 step=0.1  - 811 iterations 3.64 seconds elapsed
+Newtons Descent with Constant Step  n=10 a=100 step=0.1  - 133 iterations 5.38 seconds elapsed
+Newtons Descent with Adaptive Step  n=10 a=100 step=0.1  - 133 iterations 5.65 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=10 a=100 step=0.5  - 774 iterations 4.06 seconds elapsed
+Newtons Descent with Constant Step  n=10 a=100 step=0.5  - 21  iterations 0.91 seconds elapsed
+Newtons Descent with Adaptive Step  n=10 a=100 step=0.5  - 21  iterations 0.94 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=10 a=100 step=1.0  - 756 iterations 3.66 seconds elapsed
+Newtons Descent with Constant Step  n=10 a=100 step=1.0  - 2   iterations 0.09 seconds elapsed
+Newtons Descent with Adaptive Step  n=10 a=100 step=1.0  - 2   iterations 0.09 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=10 a=100 step=1.5  - 787 iterations 3.83 seconds elapsed
+Newtons Descent with Constant Step  n=10 a=100 step=1.5  - 21  iterations 0.92 seconds elapsed
+Newtons Descent with Adaptive Step  n=10 a=100 step=1.5  - 7   iterations 0.30 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=10 a=100 step=1.6  - 738 iterations 3.53 seconds elapsed
+Newtons Descent with Constant Step  n=10 a=100 step=1.6  - 29  iterations 1.23 seconds elapsed
+Newtons Descent with Adaptive Step  n=10 a=100 step=1.6  - 5   iterations 0.24 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=10 a=100 step=1.7  - 868 iterations 4.32 seconds elapsed
+Newtons Descent with Constant Step  n=10 a=100 step=1.7  - 40  iterations 1.76 seconds elapsed
+Newtons Descent with Adaptive Step  n=10 a=100 step=1.7  - 7   iterations 0.30 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=10 a=100 step=1.8  - 820 iterations 4.09 seconds elapsed
+Newtons Descent with Constant Step  n=10 a=100 step=1.8  - 63  iterations 2.96 seconds elapsed
+Newtons Descent with Adaptive Step  n=10 a=100 step=1.8  - 9   iterations 0.42 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=10 a=100 step=1.9  - 777 iterations 3.73 seconds elapsed
+Newtons Descent with Constant Step  n=10 a=100 step=1.9  - 133 iterations 5.78 seconds elapsed
+Newtons Descent with Adaptive Step  n=10 a=100 step=1.9  - 5   iterations 0.23 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=20 a=1   step=0.01 - 718 iterations 8.04 seconds elapsed
+Newtons Descent with Constant Step  n=20 a=1   step=0.01 - 1373 iterations 267.32 seconds elapsed
+Newtons Descent with Adaptive Step  n=20 a=1   step=0.01 - 1373 iterations 266.73 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=20 a=1   step=0.1  - 66  iterations 0.65 seconds elapsed
+Newtons Descent with Constant Step  n=20 a=1   step=0.1  - 132 iterations 26.53 seconds elapsed
+Newtons Descent with Adaptive Step  n=20 a=1   step=0.1  - 132 iterations 26.28 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=20 a=1   step=0.5  - 2   iterations 0.02 seconds elapsed
+Newtons Descent with Constant Step  n=20 a=1   step=0.5  - 21  iterations 4.03 seconds elapsed
+Newtons Descent with Adaptive Step  n=20 a=1   step=0.5  - 21  iterations 4.10 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=20 a=1   step=1.0  - 33  iterations 0.33 seconds elapsed
+Newtons Descent with Constant Step  n=20 a=1   step=1.0  - 2   iterations 0.38 seconds elapsed
+Newtons Descent with Adaptive Step  n=20 a=1   step=1.0  - 2   iterations 0.38 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=20 a=1   step=1.5  - 175 iterations 1.73 seconds elapsed
+Newtons Descent with Constant Step  n=20 a=1   step=1.5  - 21  iterations 4.03 seconds elapsed
+Newtons Descent with Adaptive Step  n=20 a=1   step=1.5  - 8   iterations 1.58 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=20 a=1   step=1.6  - 34  iterations 0.33 seconds elapsed
+Newtons Descent with Constant Step  n=20 a=1   step=1.6  - 28  iterations 5.45 seconds elapsed
+Newtons Descent with Adaptive Step  n=20 a=1   step=1.6  - 5   iterations 1.02 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=20 a=1   step=1.7  - 50  iterations 0.52 seconds elapsed
+Newtons Descent with Constant Step  n=20 a=1   step=1.7  - 40  iterations 7.86 seconds elapsed
+Newtons Descent with Adaptive Step  n=20 a=1   step=1.7  - 7   iterations 1.46 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=20 a=1   step=1.8  - 86  iterations 0.96 seconds elapsed
+Newtons Descent with Constant Step  n=20 a=1   step=1.8  - 63  iterations 13.06 seconds elapsed
+Newtons Descent with Adaptive Step  n=20 a=1   step=1.8  - 9   iterations 1.90 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=20 a=1   step=1.9  - 260 iterations 2.99 seconds elapsed
+Newtons Descent with Constant Step  n=20 a=1   step=1.9  - 132 iterations 27.24 seconds elapsed
+Newtons Descent with Adaptive Step  n=20 a=1   step=1.9  - 5   iterations 1.03 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=20 a=10  step=0.01 - 698 iterations 7.69 seconds elapsed
+Newtons Descent with Constant Step  n=20 a=10  step=0.01 - 1373 iterations 286.56 seconds elapsed
+Newtons Descent with Adaptive Step  n=20 a=10  step=0.01 - 1373 iterations 289.25 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=20 a=10  step=0.1  - 108 iterations 1.09 seconds elapsed
+Newtons Descent with Constant Step  n=20 a=10  step=0.1  - 132 iterations 26.36 seconds elapsed
+Newtons Descent with Adaptive Step  n=20 a=10  step=0.1  - 132 iterations 26.95 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=20 a=10  step=0.5  - 78  iterations 0.79 seconds elapsed
+Newtons Descent with Constant Step  n=20 a=10  step=0.5  - 21  iterations 4.21 seconds elapsed
+Newtons Descent with Adaptive Step  n=20 a=10  step=0.5  - 21  iterations 4.20 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=20 a=10  step=1.0  - 76  iterations 0.78 seconds elapsed
+Newtons Descent with Constant Step  n=20 a=10  step=1.0  - 2   iterations 0.40 seconds elapsed
+Newtons Descent with Adaptive Step  n=20 a=10  step=1.0  - 2   iterations 0.40 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=20 a=10  step=1.5  - 79  iterations 0.81 seconds elapsed
+Newtons Descent with Constant Step  n=20 a=10  step=1.5  - 21  iterations 4.14 seconds elapsed
+Newtons Descent with Adaptive Step  n=20 a=10  step=1.5  - 9   iterations 1.80 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=20 a=10  step=1.6  - 74  iterations 0.77 seconds elapsed
+Newtons Descent with Constant Step  n=20 a=10  step=1.6  - 28  iterations 5.75 seconds elapsed
+Newtons Descent with Adaptive Step  n=20 a=10  step=1.6  - 5   iterations 0.99 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=20 a=10  step=1.7  - 124 iterations 1.31 seconds elapsed
+Newtons Descent with Constant Step  n=20 a=10  step=1.7  - 40  iterations 8.00 seconds elapsed
+Newtons Descent with Adaptive Step  n=20 a=10  step=1.7  - 7   iterations 1.36 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=20 a=10  step=1.8  - 812 iterations 8.10 seconds elapsed
+Newtons Descent with Constant Step  n=20 a=10  step=1.8  - 63  iterations 12.67 seconds elapsed
+Newtons Descent with Adaptive Step  n=20 a=10  step=1.8  - 9   iterations 1.80 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=20 a=10  step=1.9  - 78  iterations 0.81 seconds elapsed
+Newtons Descent with Constant Step  n=20 a=10  step=1.9  - 132 iterations 26.71 seconds elapsed
+Newtons Descent with Adaptive Step  n=20 a=10  step=1.9  - 5   iterations 0.98 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=20 a=100 step=0.01 - 728 iterations 7.47 seconds elapsed
+Newtons Descent with Constant Step  n=20 a=100 step=0.01 - 1373 iterations 277.63 seconds elapsed
+Newtons Descent with Adaptive Step  n=20 a=100 step=0.01 - 1373 iterations 279.74 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=20 a=100 step=0.1  - 813 iterations 8.62 seconds elapsed
+Newtons Descent with Constant Step  n=20 a=100 step=0.1  - 132 iterations 26.90 seconds elapsed
+Newtons Descent with Adaptive Step  n=20 a=100 step=0.1  - 132 iterations 27.32 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=20 a=100 step=0.5  - 775 iterations 7.99 seconds elapsed
+Newtons Descent with Constant Step  n=20 a=100 step=0.5  - 21  iterations 4.13 seconds elapsed
+Newtons Descent with Adaptive Step  n=20 a=100 step=0.5  - 21  iterations 4.22 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=20 a=100 step=1.0  - 757 iterations 7.77 seconds elapsed
+Newtons Descent with Constant Step  n=20 a=100 step=1.0  - 2   iterations 0.40 seconds elapsed
+Newtons Descent with Adaptive Step  n=20 a=100 step=1.0  - 2   iterations 0.40 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=20 a=100 step=1.5  - 789 iterations 8.32 seconds elapsed
+Newtons Descent with Constant Step  n=20 a=100 step=1.5  - 21  iterations 4.17 seconds elapsed
+Newtons Descent with Adaptive Step  n=20 a=100 step=1.5  - 7   iterations 1.45 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=20 a=100 step=1.6  - 739 iterations 7.88 seconds elapsed
+Newtons Descent with Constant Step  n=20 a=100 step=1.6  - 28  iterations 5.80 seconds elapsed
+Newtons Descent with Adaptive Step  n=20 a=100 step=1.6  - 5   iterations 1.04 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=20 a=100 step=1.7  - 869 iterations 9.57 seconds elapsed
+Newtons Descent with Constant Step  n=20 a=100 step=1.7  - 40  iterations 8.27 seconds elapsed
+Newtons Descent with Adaptive Step  n=20 a=100 step=1.7  - 7   iterations 1.50 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=20 a=100 step=1.8  - 822 iterations 8.99 seconds elapsed
+Newtons Descent with Constant Step  n=20 a=100 step=1.8  - 63  iterations 13.44 seconds elapsed
+Newtons Descent with Adaptive Step  n=20 a=100 step=1.8  - 9   iterations 1.84 seconds elapsed
+====================================================================================================
+Simple Gradient Descent             n=20 a=100 step=1.9  - 778 iterations 8.40 seconds elapsed
+Newtons Descent with Constant Step  n=20 a=100 step=1.9  - 132 iterations 28.12 seconds elapsed
+Newtons Descent with Adaptive Step  n=20 a=100 step=1.9  - 5   iterations 1.18 seconds elapsed
+====================================================================================================
+
+Process finished with exit code 0
