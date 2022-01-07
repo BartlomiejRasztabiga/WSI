@@ -9,8 +9,6 @@ def plot(filename: str):
     ys_real = np.array([], dtype=np.double)
     ys_predicted = np.array([], dtype=np.double)
 
-    # TODO pamietac o odwroceniu normalizacji!
-
     file = open(filename, "r")
     lines = file.readlines()
 
@@ -24,8 +22,6 @@ def plot(filename: str):
     plt.plot(xs, ys_predicted, "b")
     plt.legend(["Actual", "Prediction"])
     plt.title(filename)
-    # plt.xticks(np.arange(MIN_X, MAX_X, step=.5))
-    # plt.yticks(np.arange(-2.2, 2.2, step=.2))
     plt.grid(True)
 
     title = filename.replace(".csv", "")
