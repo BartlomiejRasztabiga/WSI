@@ -8,7 +8,7 @@ from plot import plot
 
 
 def f(x):
-    return (x ** 2 * np.sin(x) + 100 * np.sin(x) * np.cos(x)) / 100
+    return x ** 2 * np.sin(x) + 100 * np.sin(x) * np.cos(x)
 
 
 DEBUG = True
@@ -50,6 +50,8 @@ class NeuralNetwork:
         return sigmoid(out) if apply_activation else out
 
     def predict(self, x: float) -> float:
+        # TODO refactor
+
         # input layer
         activations = np.array([[x]], dtype=np.longfloat)
 
@@ -73,7 +75,7 @@ class NeuralNetwork:
             self.run_sgd(train_inputs, train_outputs, train_indexes, mini_batch_size, learning_rate)
 
             if DEBUG is True and i % 100 == 0:
-                avg_mse = mean_squared_error(np.array([self.predict(x) for x in train_inputs]), train_outputs).mean()
+                avg_mse = mean_squared_error(np.array([self.predict(x) for x in test_inputs]), test_outputs).mean()
                 print(f"Epoch: {i} (MSE {avg_mse})", file=sys.stderr)
         # print(min(losses))
 
@@ -150,12 +152,13 @@ def main(hidden_layer_size, epochs, mini_batch_size, learning_rate):
     SAMPLE_SIZE = 20000
     test_sample_multiplier = 0.1
 
-    MIN_X = -5
-    MAX_X = 5
+    MIN_X = -15
+    MAX_X = 15
 
     # Teach the network
-    scale_x = MinMaxScaler()
-    scale_y = MinMaxScaler()
+    # TODO scaling only Y kind of works
+    # scale_x = MinMaxScaler(feature_range=(-1, 1))
+    scale_y = MinMaxScaler(feature_range=(-1, 1))
 
     # TODO optimise this!
 
@@ -169,7 +172,7 @@ def main(hidden_layer_size, epochs, mini_batch_size, learning_rate):
 
     # scale train in/out
     # train_inputs = scale_x.fit_transform(train_inputs)
-    # train_outputs = scale_y.fit_transform(train_outputs)
+    train_outputs = scale_y.fit_transform(train_outputs)
 
     # test in/out
     test_inputs = np.linspace(MIN_X, MAX_X, int(SAMPLE_SIZE * test_sample_multiplier), dtype=np.longfloat)
@@ -181,7 +184,7 @@ def main(hidden_layer_size, epochs, mini_batch_size, learning_rate):
 
     # scale test in/out
     # test_inputs = scale_x.fit_transform(test_inputs)
-    # test_outputs = scale_y.fit_transform(test_outputs)
+    test_outputs = scale_y.fit_transform(test_outputs)
 
     # reshape back for our neural net
     train_inputs = train_inputs.flatten()
@@ -205,8 +208,8 @@ def main(hidden_layer_size, epochs, mini_batch_size, learning_rate):
 
     # inverse scaling
     # test_inputs = scale_x.inverse_transform(test_inputs)
-    # test_outputs = scale_y.inverse_transform(test_outputs)
-    # nn_outputs = scale_y.inverse_transform(nn_outputs)
+    test_outputs = scale_y.inverse_transform(test_outputs)
+    nn_outputs = scale_y.inverse_transform(nn_outputs)
 
     # reshape back for csv results
     test_inputs = test_inputs.flatten()
