@@ -2,19 +2,15 @@ import argparse
 import sys
 
 import numpy as np
+from sklearn.preprocessing import MinMaxScaler
 
 from plot import plot
 
-MIN_X = -40
-MAX_X = 40
-
 
 def f(x):
-    return (x ** 2 * np.sin(x) + 100 * np.sin(x) * np.cos(x)) / 1500
+    return (x ** 2 * np.sin(x) + 100 * np.sin(x) * np.cos(x)) / 100
 
 
-EVAL_XS = np.linspace(MIN_X, MAX_X, 400, dtype=np.longfloat)
-EVAL_YS = f(EVAL_XS)
 DEBUG = True
 
 
@@ -67,7 +63,8 @@ class NeuralNetwork:
 
     # Backwards propagation (learning)
 
-    def train(self, train_inputs, train_outputs, epochs: int, mini_batch_size: int, learning_rate: float):
+    def train(self, train_inputs, train_outputs, test_inputs, test_outputs, epochs: int, mini_batch_size: int,
+              learning_rate: float):
         # Train the network with SGD split into mini-batches
 
         train_indexes = np.arange(len(train_inputs), dtype=int)
@@ -76,7 +73,7 @@ class NeuralNetwork:
             self.run_sgd(train_inputs, train_outputs, train_indexes, mini_batch_size, learning_rate)
 
             if DEBUG is True and i % 100 == 0:
-                avg_mse = mean_squared_error(np.array([self.predict(x) for x in EVAL_XS]), EVAL_YS).mean()
+                avg_mse = mean_squared_error(np.array([self.predict(x) for x in train_inputs]), train_outputs).mean()
                 print(f"Epoch: {i} (MSE {avg_mse})", file=sys.stderr)
         # print(min(losses))
 
@@ -150,27 +147,77 @@ def normalize(x, x_min, x_max, u=1, l=-1):
 
 
 def main(hidden_layer_size, epochs, mini_batch_size, learning_rate):
+    SAMPLE_SIZE = 20000
+    test_sample_multiplier = 0.1
+
+    MIN_X = -5
+    MAX_X = 5
+
     # Teach the network
-    train_xs = np.linspace(MIN_X, MAX_X, 10000, dtype=np.longfloat)
-    train_ys = f(train_xs)
+    scale_x = MinMaxScaler()
+    scale_y = MinMaxScaler()
 
-    train_xs1 = []
-    train_ys1 = []
+    # TODO optimise this!
 
-    train_xs_min = min(train_xs)
-    train_xs_max = max(train_xs)
+    # train in/out
+    train_inputs = np.linspace(MIN_X, MAX_X, SAMPLE_SIZE, dtype=np.longfloat)
+    train_outputs = f(train_inputs)
 
-    for xs in train_xs:
-        train_xs1.append(normalize(xs, train_xs_min, train_xs_max))
+    # reshape for scaler
+    train_inputs = train_inputs.reshape((len(train_inputs), 1))
+    train_outputs = train_outputs.reshape((len(train_outputs), 1))
+
+    # scale train in/out
+    # train_inputs = scale_x.fit_transform(train_inputs)
+    # train_outputs = scale_y.fit_transform(train_outputs)
+
+    # test in/out
+    test_inputs = np.linspace(MIN_X, MAX_X, int(SAMPLE_SIZE * test_sample_multiplier), dtype=np.longfloat)
+    test_outputs = f(test_inputs)
+
+    # reshape for scaler
+    test_inputs = test_inputs.reshape((len(test_inputs), 1))
+    test_outputs = test_outputs.reshape((len(test_outputs), 1))
+
+    # scale test in/out
+    # test_inputs = scale_x.fit_transform(test_inputs)
+    # test_outputs = scale_y.fit_transform(test_outputs)
+
+    # reshape back for our neural net
+    train_inputs = train_inputs.flatten()
+    train_outputs = train_outputs.flatten()
+    test_inputs = test_inputs.flatten()
+    test_outputs = test_outputs.flatten()
 
     net = NeuralNetwork(hidden_layer_size)
-    net.train(train_xs, train_ys, epochs, mini_batch_size, learning_rate)
+    net.train(train_inputs, train_outputs, test_inputs, test_outputs, epochs, mini_batch_size, learning_rate)
+
+    # gather predicted outputs
+    nn_outputs = []
+    for x in test_inputs:
+        nn_outputs.append(net.predict(x))
+    nn_outputs = np.array(nn_outputs)
+
+    # reshape for reverse scaler
+    test_inputs = test_inputs.reshape((len(test_inputs), 1))
+    test_outputs = test_outputs.reshape((len(test_outputs), 1))
+    nn_outputs = nn_outputs.reshape((len(nn_outputs), 1))
+
+    # inverse scaling
+    # test_inputs = scale_x.inverse_transform(test_inputs)
+    # test_outputs = scale_y.inverse_transform(test_outputs)
+    # nn_outputs = scale_y.inverse_transform(nn_outputs)
+
+    # reshape back for csv results
+    test_inputs = test_inputs.flatten()
+    test_outputs = test_outputs.flatten()
+    nn_outputs = nn_outputs.flatten()
 
     filename = f"range={MIN_X} n={hidden_layer_size} e={epochs} lr={learning_rate}.csv"
 
     with open(filename, "w") as file:
-        for x, y in zip(EVAL_XS, EVAL_YS):
-            print(x, y, net.predict(x), sep=",", file=file)
+        for x, y, y_prediction in zip(test_inputs, test_outputs, nn_outputs):
+            print(x, y, y_prediction, sep=",", file=file)
 
     return filename
 
