@@ -140,8 +140,8 @@ class NeuralNetwork:
 
 
 def main(hidden_layer_size, epochs, mini_batch_size, learning_rate):
-    min_x = -15
-    max_x = 15
+    min_x = -20
+    max_x = 20
     range_length = abs(max_x - min_x)
 
     sample_size_per_range_unit = 1000
