@@ -5,12 +5,12 @@ import numpy as np
 
 from plot import plot
 
-MIN_X = -15
-MAX_X = 15
+MIN_X = -40
+MAX_X = 40
 
 
 def f(x):
-    return (x ** 2 * np.sin(x) + 100 * np.sin(x) * np.cos(x)) / 100
+    return (x ** 2 * np.sin(x) + 100 * np.sin(x) * np.cos(x)) / 1500
 
 
 EVAL_XS = np.linspace(MIN_X, MAX_X, 400, dtype=np.longfloat)
