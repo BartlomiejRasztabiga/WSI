@@ -37,10 +37,8 @@ class NeuralNetwork:
 
         # TODO multi-layer
 
-        self.hidden_layer_weights = np.random.uniform(-1.0, 1.0, size=(self.hidden_layer_size, 1)).astype(
-            np.longfloat)  # TODO has to be uniform?
-        self.hidden_layer_biases = np.random.uniform(-1.0, 1.0, size=(self.hidden_layer_size, 1)).astype(
-            np.longfloat)  # TODO has to be uniform?
+        self.hidden_layer_weights = np.random.uniform(-1.0, 1.0, size=(self.hidden_layer_size, 1)).astype(np.longfloat)
+        self.hidden_layer_biases = np.random.uniform(-1.0, 1.0, size=(self.hidden_layer_size, 1)).astype(np.longfloat)
 
         self.output_layer_weights = np.zeros(shape=(1, self.hidden_layer_size), dtype=np.longfloat)
         self.output_layer_biases = np.zeros(shape=(1, 1))
