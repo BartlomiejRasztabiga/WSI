@@ -150,51 +150,32 @@ def main(hidden_layer_size, epochs, mini_batch_size, learning_rate):
     # scaling just Y kind of works
     scale_y = MinMaxScaler(feature_range=(-1, 1))
 
-    # TODO optimise this!
-
     # train in/out
     train_inputs = np.linspace(MIN_X, MAX_X, SAMPLE_SIZE, dtype=np.longfloat)
     train_outputs = f(train_inputs)
-
-    # reshape for scaler
-    train_outputs = train_outputs.reshape((len(train_outputs), 1))
-
-    # scale train in/out
-    train_outputs = scale_y.fit_transform(train_outputs)
 
     # test in/out
     test_inputs = np.linspace(MIN_X, MAX_X, int(SAMPLE_SIZE * test_sample_multiplier), dtype=np.longfloat)
     test_outputs = f(test_inputs)
 
-    # reshape for scaler
-    test_outputs = test_outputs.reshape((len(test_outputs), 1))
+    # scale train out
+    train_outputs_scaled = train_outputs.reshape((len(train_outputs), 1))
+    train_outputs_scaled = scale_y.fit_transform(train_outputs_scaled)
+    train_outputs_scaled = train_outputs_scaled.flatten()
 
-    # scale test in/out
-    test_outputs = scale_y.fit_transform(test_outputs)
-
-    # reshape back for our neural net
-    train_outputs = train_outputs.flatten()
-    test_outputs = test_outputs.flatten()
+    # scale test out
+    test_outputs_scaled = test_outputs.reshape((len(test_outputs), 1))
+    test_outputs_scaled = scale_y.fit_transform(test_outputs_scaled)
+    test_outputs_scaled = test_outputs_scaled.flatten()
 
     net = NeuralNetwork(hidden_layer_size)
-    net.train(train_inputs, train_outputs, test_inputs, test_outputs, epochs, mini_batch_size, learning_rate)
+    net.train(train_inputs, train_outputs_scaled, test_inputs, test_outputs_scaled, epochs, mini_batch_size,
+              learning_rate)
 
     # gather predicted outputs
-    nn_outputs = []
-    for x in test_inputs:
-        nn_outputs.append(net.forward_propagation(x))
-    nn_outputs = np.array(nn_outputs)
-
-    # reshape for reverse scaler
-    test_outputs = test_outputs.reshape((len(test_outputs), 1))
+    nn_outputs = np.array([net.forward_propagation(x) for x in test_inputs])
     nn_outputs = nn_outputs.reshape((len(nn_outputs), 1))
-
-    # inverse scaling
-    test_outputs = scale_y.inverse_transform(test_outputs)
     nn_outputs = scale_y.inverse_transform(nn_outputs)
-
-    # reshape back for csv results
-    test_outputs = test_outputs.flatten()
     nn_outputs = nn_outputs.flatten()
 
     filename = f"range={MIN_X} n={hidden_layer_size} e={epochs} lr={learning_rate}.csv"
@@ -206,8 +187,6 @@ def main(hidden_layer_size, epochs, mini_batch_size, learning_rate):
     return filename
 
 
-# TODO SKALOWANIE!
-# TODO znalezc dobre wartosci do -40, 40 albo to ojebac
 # TODO po co mini batch, umiec wyjasnic, zmienic batch size?
 # TODO po co learning rate, umiec wyjasnic, inna wartosc?
 # TODO ile neuronow? tyle ile ekstremow?
