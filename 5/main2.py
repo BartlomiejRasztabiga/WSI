@@ -140,22 +140,27 @@ class NeuralNetwork:
 
 
 def main(hidden_layer_size, epochs, mini_batch_size, learning_rate):
-    SAMPLE_SIZE = 20000
+    min_x = -15
+    max_x = 15
+    range_length = abs(max_x - min_x)
+
+    sample_size_per_range_unit = 1000
+    sample_size = range_length * sample_size_per_range_unit
+
     test_sample_multiplier = 0.1
 
-    MIN_X = -20
-    MAX_X = 20
+    # TODO scale X as well?
 
     # Teach the network
     # scaling just Y kind of works
     scale_y = MinMaxScaler(feature_range=(-1, 1))
 
     # train in/out
-    train_inputs = np.linspace(MIN_X, MAX_X, SAMPLE_SIZE, dtype=np.longfloat)
+    train_inputs = np.linspace(min_x, max_x, sample_size, dtype=np.longfloat)
     train_outputs = f(train_inputs)
 
     # test in/out
-    test_inputs = np.linspace(MIN_X, MAX_X, int(SAMPLE_SIZE * test_sample_multiplier), dtype=np.longfloat)
+    test_inputs = np.linspace(min_x, max_x, int(sample_size * test_sample_multiplier), dtype=np.longfloat)
     test_outputs = f(test_inputs)
 
     # scale train out
@@ -178,7 +183,7 @@ def main(hidden_layer_size, epochs, mini_batch_size, learning_rate):
     nn_outputs = scale_y.inverse_transform(nn_outputs)
     nn_outputs = nn_outputs.flatten()
 
-    filename = f"range={MIN_X} n={hidden_layer_size} e={epochs} lr={learning_rate}.csv"
+    filename = f"range={min_x} n={hidden_layer_size} e={epochs} lr={learning_rate} batch={mini_batch_size}.csv"
 
     with open(filename, "w") as file:
         for x, y, y_prediction in zip(test_inputs, test_outputs, nn_outputs):
