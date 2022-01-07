@@ -1,5 +1,6 @@
 import argparse
 import sys
+from math import sqrt
 
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
@@ -36,9 +37,12 @@ class NeuralNetwork:
         self.hidden_layer_size = hidden_layer_neurons_count
 
         # TODO multi-layer
+        n = 1
 
-        self.hidden_layer_weights = np.random.uniform(-1.0, 1.0, size=(self.hidden_layer_size, 1)).astype(np.longfloat)
-        self.hidden_layer_biases = np.random.uniform(-1.0, 1.0, size=(self.hidden_layer_size, 1)).astype(np.longfloat)
+        self.hidden_layer_weights = np.random.uniform(-1.0 / sqrt(n), 1.0 / sqrt(n),
+                                                      size=(self.hidden_layer_size, 1)).astype(np.longfloat)
+        self.hidden_layer_biases = np.random.uniform(-1.0 / sqrt(n), 1.0 / sqrt(n),
+                                                     size=(self.hidden_layer_size, 1)).astype(np.longfloat)
 
         self.output_layer_weights = np.zeros(shape=(1, self.hidden_layer_size), dtype=np.longfloat)
         self.output_layer_biases = np.zeros(shape=(1, 1))
