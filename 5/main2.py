@@ -45,21 +45,15 @@ class NeuralNetwork:
         self.output_layer_weights = np.zeros(shape=(1, self.hidden_layer_size), dtype=np.longfloat)
         self.output_layer_biases = np.zeros(shape=(1, 1))
 
-    def forward_propagation(self, x, weights, biases, apply_activation: bool = True):
-        out = np.matmul(weights, x) + biases
-        return sigmoid(out) if apply_activation else out
-
-    def predict(self, x: float) -> float:
-        # TODO refactor
-
+    def forward_propagation(self, x: float) -> float:
         # input layer
         activations = np.array([[x]], dtype=np.longfloat)
 
         # hidden layer
-        activations = self.forward_propagation(activations, self.hidden_layer_weights, self.hidden_layer_biases, True)
+        activations = sigmoid(np.matmul(self.hidden_layer_weights, activations) + self.hidden_layer_biases)
 
         # output layer
-        activations = self.forward_propagation(activations, self.output_layer_weights, self.output_layer_biases, False)
+        activations = np.matmul(self.output_layer_weights, activations) + self.output_layer_biases
 
         return activations[0][0]
 
@@ -75,7 +69,8 @@ class NeuralNetwork:
             self.run_sgd(train_inputs, train_outputs, train_indexes, mini_batch_size, learning_rate)
 
             if DEBUG is True and i % 100 == 0:
-                avg_mse = mean_squared_error(np.array([self.predict(x) for x in test_inputs]), test_outputs).mean()
+                avg_mse = mean_squared_error(np.array([self.forward_propagation(x) for x in test_inputs]),
+                                             test_outputs).mean()
                 print(f"Epoch: {i} (MSE {avg_mse})", file=sys.stderr)
         # print(min(losses))
 
@@ -144,20 +139,15 @@ class NeuralNetwork:
         return output_layer_weights_delta, hidden_layer_weights_delta, output_layer_bias_delta, hidden_layer_bias_delta
 
 
-def normalize(x, x_min, x_max, u=1, l=-1):
-    return (x - x_min) * (u - l) / (x_max - x_min) + l
-
-
 def main(hidden_layer_size, epochs, mini_batch_size, learning_rate):
     SAMPLE_SIZE = 20000
     test_sample_multiplier = 0.1
 
-    MIN_X = -15
-    MAX_X = 15
+    MIN_X = -20
+    MAX_X = 20
 
     # Teach the network
-    # TODO scaling only Y kind of works
-    # scale_x = MinMaxScaler(feature_range=(-1, 1))
+    # scaling just Y kind of works
     scale_y = MinMaxScaler(feature_range=(-1, 1))
 
     # TODO optimise this!
@@ -167,11 +157,9 @@ def main(hidden_layer_size, epochs, mini_batch_size, learning_rate):
     train_outputs = f(train_inputs)
 
     # reshape for scaler
-    train_inputs = train_inputs.reshape((len(train_inputs), 1))
     train_outputs = train_outputs.reshape((len(train_outputs), 1))
 
     # scale train in/out
-    # train_inputs = scale_x.fit_transform(train_inputs)
     train_outputs = scale_y.fit_transform(train_outputs)
 
     # test in/out
@@ -179,17 +167,13 @@ def main(hidden_layer_size, epochs, mini_batch_size, learning_rate):
     test_outputs = f(test_inputs)
 
     # reshape for scaler
-    test_inputs = test_inputs.reshape((len(test_inputs), 1))
     test_outputs = test_outputs.reshape((len(test_outputs), 1))
 
     # scale test in/out
-    # test_inputs = scale_x.fit_transform(test_inputs)
     test_outputs = scale_y.fit_transform(test_outputs)
 
     # reshape back for our neural net
-    train_inputs = train_inputs.flatten()
     train_outputs = train_outputs.flatten()
-    test_inputs = test_inputs.flatten()
     test_outputs = test_outputs.flatten()
 
     net = NeuralNetwork(hidden_layer_size)
@@ -198,21 +182,18 @@ def main(hidden_layer_size, epochs, mini_batch_size, learning_rate):
     # gather predicted outputs
     nn_outputs = []
     for x in test_inputs:
-        nn_outputs.append(net.predict(x))
+        nn_outputs.append(net.forward_propagation(x))
     nn_outputs = np.array(nn_outputs)
 
     # reshape for reverse scaler
-    test_inputs = test_inputs.reshape((len(test_inputs), 1))
     test_outputs = test_outputs.reshape((len(test_outputs), 1))
     nn_outputs = nn_outputs.reshape((len(nn_outputs), 1))
 
     # inverse scaling
-    # test_inputs = scale_x.inverse_transform(test_inputs)
     test_outputs = scale_y.inverse_transform(test_outputs)
     nn_outputs = scale_y.inverse_transform(nn_outputs)
 
     # reshape back for csv results
-    test_inputs = test_inputs.flatten()
     test_outputs = test_outputs.flatten()
     nn_outputs = nn_outputs.flatten()
 
