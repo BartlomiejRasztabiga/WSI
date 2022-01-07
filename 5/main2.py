@@ -93,7 +93,7 @@ class NeuralNetwork:
 
         for idx in train_indexes:
             output_layer_weights_delta, hidden_layer_weights_delta, output_layer_bias_delta, hidden_layer_bias_delta = \
-                self.backprop(train_xs[idx], train_ys[idx])
+                self.backward_propagation(train_xs[idx], train_ys[idx])
 
             output_layer_weights_gradient += output_layer_weights_delta
             hidden_layer_weights_gradient += hidden_layer_weights_delta
@@ -116,7 +116,7 @@ class NeuralNetwork:
         self.output_layer_biases -= output_layer_biases_gradient
         self.hidden_layer_biases -= hidden_layer_biases_gradient
 
-    def backprop(self, train_x: float, train_y: float):
+    def backward_propagation(self, train_x: float, train_y: float):
         # Forward propagation
         output_layer_activations_expected = np.array([[train_y]], dtype=np.longfloat)
         input_layer_activations = np.array([[train_x]], dtype=np.longfloat)
