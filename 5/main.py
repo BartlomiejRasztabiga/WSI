@@ -25,8 +25,6 @@ def main(hidden_layer_size, epochs, mini_batch_size, learning_rate):
 
     test_sample_multiplier = 0.1
 
-    # Teach the network
-    # scaling just Y kind of works
     scale_y = MinMaxScaler(feature_range=(-1, 1))
 
     # train in/out
@@ -48,8 +46,8 @@ def main(hidden_layer_size, epochs, mini_batch_size, learning_rate):
     test_outputs_scaled = test_outputs_scaled.flatten()
 
     net = NeuralNetwork(hidden_layer_size)
-    net.train(train_inputs, train_outputs_scaled, test_inputs, test_outputs_scaled, epochs, mini_batch_size,
-              learning_rate)
+    net.train(train_inputs, train_outputs_scaled, test_inputs, test_outputs_scaled, epochs, learning_rate,
+              mini_batch_size)
 
     # gather predicted outputs
     nn_outputs = np.array([net.predict(x) for x in test_inputs])
@@ -99,10 +97,10 @@ if __name__ == "__main__":
     if len(sys.argv) == 2:
         plot_function(sys.argv[1])
     else:
-        hidden_layer_size = sys.argv[1]
-        epochs = sys.argv[2]
-        mini_batch_size = sys.argv[3]
-        learning_rate = sys.argv[4]
+        hidden_layer_size = int(sys.argv[1])
+        epochs = int(sys.argv[2])
+        mini_batch_size = int(sys.argv[3])
+        learning_rate = float(sys.argv[4])
 
         filename = main(hidden_layer_size, epochs, mini_batch_size, learning_rate)
         plot_function(filename)
