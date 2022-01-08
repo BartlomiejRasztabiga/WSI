@@ -1,232 +1,108 @@
-from math import sin, cos
-from random import random
+import sys
 
 import numpy as np
+from matplotlib import pyplot as plt
+from sklearn.preprocessing import MinMaxScaler
+
+from neuralnetwork import NeuralNetwork
 
 
 def f(x):
-    return x ** 2 * sin(x) + 100 * sin(x) * cos(x)
+    return x ** 2 * np.sin(x) + 100 * np.sin(x) * np.cos(x)
 
 
-class MLP(object):
-    """A Multilayer Perceptron class.
-    """
+def mse(x, target):
+    return np.square(x - target)
 
-    def __init__(self, num_inputs=3, hidden_layers=[3, 3], num_outputs=2):
-        """Constructor for the MLP. Takes the number of inputs,
-            a variable number of hidden layers, and number of outputs
-        Args:
-            num_inputs (int): Number of inputs
-            hidden_layers (list): A list of ints for the hidden layers
-            num_outputs (int): Number of outputs
-        """
 
-        self.num_inputs = num_inputs
-        self.hidden_layers = hidden_layers
-        self.num_outputs = num_outputs
+def main(hidden_layer_size, epochs, mini_batch_size, learning_rate):
+    min_x = -15
+    max_x = 15
+    range_length = abs(max_x - min_x)
 
-        # create a generic representation of the layers
-        layers = [num_inputs] + hidden_layers + [num_outputs]
+    sample_size_per_range_unit = 1000
+    sample_size = range_length * sample_size_per_range_unit
 
-        # create random connection weights for the layers
-        weights = []
-        for i in range(len(layers) - 1):
-            w = np.random.rand(layers[i], layers[i + 1])
-            weights.append(w)
-        self.weights = weights
+    test_sample_multiplier = 0.1
 
-        # save derivatives per layer
-        derivatives = []
-        for i in range(len(layers) - 1):
-            d = np.zeros((layers[i], layers[i + 1]))
-            derivatives.append(d)
-        self.derivatives = derivatives
+    # Teach the network
+    # scaling just Y kind of works
+    scale_y = MinMaxScaler(feature_range=(-1, 1))
 
-        # save activations per layer
-        activations = []
-        for i in range(len(layers)):
-            a = np.zeros(layers[i])
-            activations.append(a)
-        self.activations = activations
+    # train in/out
+    train_inputs = np.linspace(min_x, max_x, sample_size, dtype=np.longfloat)
+    train_outputs = f(train_inputs)
 
-    def forward_propagate(self, inputs):
-        """Computes forward propagation of the network based on input signals.
-        Args:
-            inputs (ndarray): Input signals
-        Returns:
-            activations (ndarray): Output values
-        """
+    # test in/out
+    test_inputs = np.linspace(min_x, max_x, int(sample_size * test_sample_multiplier), dtype=np.longfloat)
+    test_outputs = f(test_inputs)
 
-        # the input layer activation is just the input itself
-        activations = inputs
+    # scale train out
+    train_outputs_scaled = train_outputs.reshape((len(train_outputs), 1))
+    train_outputs_scaled = scale_y.fit_transform(train_outputs_scaled)
+    train_outputs_scaled = train_outputs_scaled.flatten()
 
-        # save the activations for backpropogation
-        self.activations[0] = activations
+    # scale test out
+    test_outputs_scaled = test_outputs.reshape((len(test_outputs), 1))
+    test_outputs_scaled = scale_y.fit_transform(test_outputs_scaled)
+    test_outputs_scaled = test_outputs_scaled.flatten()
 
-        # iterate through the network layers
-        for i, w in enumerate(self.weights):
-            # calculate matrix multiplication between previous activation and weight matrix
-            net_inputs = np.dot(activations, w)
+    net = NeuralNetwork(hidden_layer_size)
+    net.train(train_inputs, train_outputs_scaled, test_inputs, test_outputs_scaled, epochs, mini_batch_size,
+              learning_rate)
 
-            # apply sigmoid activation function
-            activations = self._sigmoid(net_inputs)
+    # gather predicted outputs
+    nn_outputs = np.array([net.predict(x) for x in test_inputs])
+    nn_outputs = nn_outputs.reshape((len(nn_outputs), 1))
+    nn_outputs = scale_y.inverse_transform(nn_outputs)
+    nn_outputs = nn_outputs.flatten()
 
-            # save the activations for backpropogation
-            self.activations[i + 1] = activations
+    output_filename = f"range={min_x} n={hidden_layer_size} e={epochs} lr={learning_rate} batch={mini_batch_size}.csv"
 
-        # return output layer activation
-        return activations
+    with open(output_filename, "w") as file:
+        for x, y, y_prediction in zip(test_inputs, test_outputs, nn_outputs):
+            print(x, y, y_prediction, sep=",", file=file)
 
-    def back_propagate(self, error):
-        """Backpropogates an error signal.
-        Args:
-            error (ndarray): The error to backprop.
-        Returns:
-            error (ndarray): The final error of the input
-        """
+    return output_filename
 
-        # iterate backwards through the network layers
-        for i in reversed(range(len(self.derivatives))):
-            # get activation for previous layer
-            activations = self.activations[i + 1]
 
-            # apply sigmoid derivative function
-            delta = error * self._sigmoid_derivative(activations)
+def plot_function(results_filename: str):
+    xs = []
+    ys_real = []
+    ys_predicted = []
 
-            # reshape delta as to have it as a 2d array
-            delta_re = delta.reshape(delta.shape[0], -1).T
+    results_file = open(results_filename, "r")
+    lines = results_file.readlines()
 
-            # get activations for current layer
-            current_activations = self.activations[i]
+    for line in lines:
+        x, y_real, y_predicted = map(float, line.split(","))
+        xs.append(x)
+        ys_real.append(y_real)
+        ys_predicted.append(y_predicted)
 
-            # reshape activations as to have them as a 2d column matrix
-            current_activations = current_activations.reshape(current_activations.shape[0], -1)
+    avg_mse = mse(np.array(ys_predicted), np.array(ys_real)).mean()
 
-            # save derivative after applying matrix multiplication
-            self.derivatives[i] = np.dot(current_activations, delta_re)
+    title = results_filename.replace(".csv", "").replace("./", "")
 
-            # backpropogate the next error
-            error = np.dot(delta, self.weights[i].T)
+    plt.plot(xs, ys_real, "r")
+    plt.plot(xs, ys_predicted, "b")
+    plt.legend(["Real value", "Prediction"])
+    plt.title(f"{title} MSE={round(avg_mse, 2)}")
+    plt.grid(True)
 
-    def train(self, inputs, targets, epochs, learning_rate):
-        """Trains model running forward prop and backprop
-        Args:
-            inputs (ndarray): X
-            targets (ndarray): Y
-            epochs (int): Num. epochs we want to train the network for
-            learning_rate (float): Step to apply to gradient descent
-        """
-        # now enter the training loop
-        for i in range(epochs):
-            sum_errors = 0
-
-            # iterate through all the training data
-            for j, input in enumerate(inputs):
-                target = targets[j]
-
-                # activate the network!
-                output = self.forward_propagate(input)
-
-                error = target - output
-
-                self.back_propagate(error)
-
-                # now perform gradient descent on the derivatives
-                # (this will update the weights
-                self.gradient_descent(learning_rate)
-
-                # keep track of the MSE for reporting later
-                sum_errors += self._mse(target, output)
-
-            # Epoch complete, report the training error
-            print("Error: {} at epoch {}".format(sum_errors / len(inputs), i + 1))
-
-        print("Training complete!")
-        print("=====")
-
-    def gradient_descent(self, learningRate=1):
-        """Learns by descending the gradient
-        Args:
-            learningRate (float): How fast to learn.
-        """
-        # update the weights by stepping down the gradient
-        for i in range(len(self.weights)):
-            weights = self.weights[i]
-            derivatives = self.derivatives[i]
-            weights += derivatives * learningRate
-
-    def _sigmoid(self, x):
-        """Sigmoid activation function
-        Args:
-            x (float): Value to be processed
-        Returns:
-            y (float): Output
-        """
-
-        y = 1.0 / (1 + np.exp(-x))
-        return y
-
-    def _sigmoid_derivative(self, x):
-        """Sigmoid derivative function
-        Args:
-            x (float): Value to be processed
-        Returns:
-            y (float): Output
-        """
-        return x * (1.0 - x)
-
-    def _mse(self, target, output):
-        """Mean Squared Error loss function
-        Args:
-            target (ndarray): The ground trut
-            output (ndarray): The predicted values
-        Returns:
-            (float): Output
-        """
-        return np.average((target - output) ** 2)
+    plt.savefig(f"{title}.png")
+    plt.close()
+    results_file.close()
 
 
 if __name__ == "__main__":
-    learning_set_multiplier = 0.8
-    testing_set_multiplier = 1 - learning_set_multiplier
+    if len(sys.argv) == 2:
+        plot_function(sys.argv[1])
+    else:
+        hidden_layer_size = sys.argv[1]
+        epochs = sys.argv[2]
+        mini_batch_size = sys.argv[3]
+        learning_rate = sys.argv[4]
 
-    # TODO hwo to do it better?
-    X = np.array([[xi] for xi in np.arange(-40, 40, 0.1)])
-    n = len(X)
-
-    idx = np.random.choice(X.shape[0], size=int(n * learning_set_multiplier))
-    X_train = X[idx]
-    Y_train = np.array([[f(i[0])] for i in X_train])
-
-    # create a Multilayer Perceptron with one hidden layer
-    mlp = MLP(1, [40], 1)
-
-    # train network
-    X_train = np.array([[random()] for _ in range(1000)])
-    Y_train = np.array([[f(i[0])] for i in X_train])
-    mlp.train(X_train, Y_train, 100, 0.1)
-
-    # create dummy data
-    idx = np.random.choice(X.shape[0], size=int(n * testing_set_multiplier))
-    X_test = X[idx]
-    Y_test = np.array([[f(i[0])] for i in X_test])
-
-    # create dummy data
-    input = np.array([3])
-    target = np.array([9])
-
-    # get a prediction
-    output = mlp.forward_propagate(input)
-
-    print()
-    print("Our network believes that f({}) is equal to {} and should be {}".format(input[0], output[0], f(input[0])))
-
-    # TODO czemu z przykladem z neta dziala a tu nie? XD kwestia podawania danych?
-    # TODO trzeba jakos normalizowac dane?
-    # TODO zaleznie od funkcji aktywacji trzeba normalizowac dane, najlepiej chyba jakis tanh?
-    # sigmoid zwraca wartosci tylko od -1 do 1!!!! chyba dlatego nie dziala? XD
-
-    # get a prediction
-    # for ix, x in enumerate(X_test):
-    #     y = mlp.forward_propagate(x)
-    #     print("Our network believesinputs that f({}) is equal to {}. Should be {}".format(x[0], y[0], Y_test[ix]))
+        filename = main(hidden_layer_size, epochs, mini_batch_size, learning_rate)
+        plot_function(filename)
