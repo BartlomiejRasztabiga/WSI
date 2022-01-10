@@ -1,4 +1,5 @@
 from math import sqrt
+from typing import List
 
 import numpy as np
 
@@ -6,57 +7,57 @@ DEBUG = True
 
 
 class NeuralNetwork:
-    def __init__(self, hidden_layer_size):
-        self.hidden_layer_size = hidden_layer_size
+    def __init__(self, sizes: List[int]):
+        self.num_layers = len(sizes)
+        self.sizes = sizes
 
         input_layer_size = 1
-        output_layer_size = 1
 
-        self.hidden_layer_weights = np.random.uniform(-1.0 / sqrt(input_layer_size), 1.0 / sqrt(input_layer_size),
-                                                      size=(self.hidden_layer_size, input_layer_size)).astype(
-            np.longfloat)
-        self.hidden_layer_biases = np.random.uniform(-1.0 / sqrt(input_layer_size), 1.0 / sqrt(input_layer_size),
-                                                     size=(self.hidden_layer_size, input_layer_size)).astype(
-            np.longfloat)
-
-        self.output_layer_weights = np.zeros(shape=(input_layer_size, self.hidden_layer_size), dtype=np.longfloat)
-        self.output_layer_biases = np.zeros(shape=(output_layer_size, output_layer_size))
+        self.biases = [
+            np.random.uniform(-1.0 / sqrt(input_layer_size), 1.0 / sqrt(input_layer_size), size=(y, 1)).astype(
+                np.longfloat) for y in sizes[1:]]
+        self.weights = [
+            np.random.uniform(-1.0 / sqrt(input_layer_size), 1.0 / sqrt(input_layer_size), size=(x, y)).astype(
+                np.longfloat) for x, y in zip(sizes[:-1], sizes[1:])]
 
     def predict(self, x: float) -> float:
         return self._forward_propagation(x)
 
     def _forward_propagation(self, x: float) -> float:
-        # input layer
-        result = np.array([[x]], dtype=np.longfloat)
-
-        # hidden layer
-        result = self._sigmoid(np.matmul(self.hidden_layer_weights, result) + self.hidden_layer_biases)
-
-        # output layer
-        result = np.matmul(self.output_layer_weights, result) + self.output_layer_biases
-
-        # output is a matrix 1x1
+        result = x
+        for biases, weights in zip(self.biases, self.weights):
+            result = self._sigmoid(np.matmul(weights, result) + biases)
         return result[0][0]
 
     def _backward_propagation(self, train_x: float, train_y: float):
-        # Forward propagation
-        output_layer_expected_results = np.array([[train_y]], dtype=np.longfloat)
-        input_layer_inputs = np.array([[train_x]], dtype=np.longfloat)
-
-        hidden_layer_results = self._sigmoid(
-            np.matmul(self.hidden_layer_weights, input_layer_inputs) + self.hidden_layer_biases)
-        output_layer_results = np.matmul(self.output_layer_weights, hidden_layer_results) + self.output_layer_biases
-
-        # Backward propagation into the output layer
-        output_layer_bias_delta = self._mse_derivative(output_layer_results, output_layer_expected_results)
-        output_layer_weights_delta = np.matmul(output_layer_bias_delta, hidden_layer_results.T)
-
-        # Backward propagation into the hidden layer
-        hidden_layer_bias_delta = np.matmul(self.output_layer_weights.T,
-                                            output_layer_bias_delta) * self._sigmoid_derivative(hidden_layer_results)
-        hidden_layer_weights_delta = np.matmul(hidden_layer_bias_delta, input_layer_inputs)
-
-        return output_layer_weights_delta, hidden_layer_weights_delta, output_layer_bias_delta, hidden_layer_bias_delta
+        nabla_b = [np.zeros(b.shape) for b in self.biases]
+        nabla_w = [np.zeros(w.shape) for w in self.weights]
+        # feedforward
+        activation = np.array([train_x])
+        activations = [train_x]  # list to store all the activations, layer by layer
+        zs = []  # list to store all the z vectors, layer by layer
+        for b, w in zip(self.biases, self.weights):
+            z = np.dot(w, activation) + b
+            zs.append(z)
+            activation = self._sigmoid(z)
+            activations.append(activation)
+        # backward pass
+        delta = self._mse_derivative(activations[-1], train_y) * self._sigmoid_derivative(zs[-1])
+        nabla_b[-1] = delta
+        nabla_w[-1] = np.dot( activations[-2].transpose(), delta)
+        # Note that the variable l in the loop below is used a little
+        # differently to the notation in Chapter 2 of the book.  Here,
+        # l = 1 means the last layer of neurons, l = 2 is the
+        # second-last layer, and so on.  It's a renumbering of the
+        # scheme in the book, used here to take advantage of the fact
+        # that Python can use negative indices in lists.
+        for l in range(2, self.num_layers):
+            z = zs[-l]
+            sp = self._sigmoid_derivative(z)
+            delta = np.dot(delta, self.weights[-l + 1].transpose()) * sp
+            nabla_b[-l] = delta
+            nabla_w[-l] = np.dot(delta, activations[-l - 1].transpose())
+        return nabla_b, nabla_w
 
     def train(self, train_inputs, train_outputs, test_inputs, test_outputs, epochs_count: int, learning_rate: float,
               batch_size: int):
@@ -82,26 +83,17 @@ class NeuralNetwork:
                                  learning_rate)
 
     def _run_mini_batch(self, train_xs, train_ys, train_indexes, learning_rate: float):
-        output_layer_weights_gradient = np.zeros(shape=self.output_layer_weights.shape, dtype=np.longfloat)
-        hidden_layer_weights_gradient = np.zeros(shape=self.hidden_layer_weights.shape, dtype=np.longfloat)
-        output_layer_biases_gradient = np.zeros(shape=self.output_layer_biases.shape, dtype=np.longfloat)
-        hidden_layer_biases_gradient = np.zeros(shape=self.hidden_layer_biases.shape, dtype=np.longfloat)
-
+        biases_gradient = [np.zeros(b.shape) for b in self.biases]
+        weights_gradient = [np.zeros(w.shape) for w in self.weights]
         for idx in train_indexes:
-            output_layer_weights_delta, hidden_layer_weights_delta, output_layer_bias_delta, hidden_layer_bias_delta = \
-                self._backward_propagation(train_xs[idx], train_ys[idx])
-
-            output_layer_weights_gradient += output_layer_weights_delta
-            hidden_layer_weights_gradient += hidden_layer_weights_delta
-            output_layer_biases_gradient += output_layer_bias_delta
-            hidden_layer_biases_gradient += hidden_layer_bias_delta
+            biases_delta, weights_delta = self._backward_propagation(train_xs[idx], train_ys[idx])
+            biases_gradient = [nb + dnb for nb, dnb in zip(biases_gradient, biases_delta)]
+            weights_gradient = [nw + dnw for nw, dnw in zip(weights_gradient, weights_delta)]
 
         learning_step = learning_rate / len(train_indexes)
 
-        self.output_layer_weights -= output_layer_weights_gradient * learning_step
-        self.hidden_layer_weights -= hidden_layer_weights_gradient * learning_step
-        self.output_layer_biases -= output_layer_biases_gradient * learning_step
-        self.hidden_layer_biases -= hidden_layer_biases_gradient * learning_step
+        self.weights = [w - learning_step * nw for w, nw in zip(self.weights, weights_gradient)]
+        self.biases = [b - learning_step * nb for b, nb in zip(self.biases, biases_gradient)]
 
     def _sigmoid(self, x):
         ex = np.exp(x, dtype=np.longfloat)

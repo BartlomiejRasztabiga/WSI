@@ -102,5 +102,5 @@ if __name__ == "__main__":
         mini_batch_size = int(sys.argv[3])
         learning_rate = float(sys.argv[4])
 
-        filename = main(hidden_layer_size, epochs, mini_batch_size, learning_rate)
+        filename = main([1, hidden_layer_size, 1], epochs, mini_batch_size, learning_rate)
         plot_function(filename)
