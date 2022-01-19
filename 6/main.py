@@ -67,16 +67,16 @@ def main():
                          learning_rate=optimal_lr,
                          discount_rate=optimal_dr,
                          exploration_rate=optimal_er)
-        print(exploration_rate, avg_reward)
+        print(episode, avg_reward)
     print()
 
     print("comparing LR")
-    for lr in [1.0, 0.5, 0.1, 0.01, 0.001, 0.0001]:
+    for lr in [2.0, 1.0, 0.5, 0.1, 0.01, 0.001]:
         avg_reward = run(episodes=optimal_episodes,
                          learning_rate=lr,
                          discount_rate=optimal_dr,
                          exploration_rate=optimal_er)
-        print(exploration_rate, avg_reward)
+        print(lr, avg_reward)
     print()
 
     print("comparing DR")
@@ -85,7 +85,7 @@ def main():
                          learning_rate=optimal_lr,
                          discount_rate=dr,
                          exploration_rate=optimal_er)
-        print(exploration_rate, avg_reward)
+        print(dr, avg_reward)
     print()
 
 
