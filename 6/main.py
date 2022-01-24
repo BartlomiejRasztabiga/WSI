@@ -103,6 +103,7 @@ def main():
         x.append(episode)
         y.append(avg_reward)
         print(episode, avg_reward)
+    draw_chart(x, y, 'Porównanie liczby epizodów', 'episodes_comparison.png', 'episodes count', 'średnia nagroda')
 
     print("comparing LR")
     x = []
@@ -116,6 +117,7 @@ def main():
         x.append(lr)
         y.append(avg_reward)
         print(lr, avg_reward)
+    draw_chart(x, y, 'Porównanie LR', 'lr_comparison.png', 'learning rate', 'średnia nagroda')
 
     print("comparing DR")
     x = []
@@ -129,6 +131,7 @@ def main():
         x.append(dr)
         y.append(avg_reward)
         print(dr, avg_reward)
+    draw_chart(x, y, 'Porównanie DR', 'dr_comparison.png', 'discount rate', 'średnia nagroda')
 
 
 if __name__ == "__main__":
